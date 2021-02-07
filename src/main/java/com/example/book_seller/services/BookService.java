@@ -16,10 +16,11 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-//    public List<Book> getBookList() {
-//        bookRepository;
-//        return new ResponseMessage<>(200, "Register success", "");
-//    }
+//    public List<Book> getBookList(String accessToken, String groupBy, String genreID, String sortedBy, Integer offset, Integer limit) {
+    public List<Book> getBookList() {
+        List<Book> books = bookRepository.findAll();
+        return books;
+    }
 
     public ResponseMessage<String> addBook(Book book) {
         bookRepository.save(book);
