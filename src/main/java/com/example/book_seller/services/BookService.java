@@ -3,6 +3,7 @@ package com.example.book_seller.services;
 import com.example.book_seller.models.ResponseMessage;
 import com.example.book_seller.models.entities.Book;
 import com.example.book_seller.repositories.BookRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,5 +26,23 @@ public class BookService {
     public ResponseMessage<String> addBook(Book book) {
         bookRepository.save(book);
         return new ResponseMessage<>(200, "Success", "");
+    }
+
+    public ResponseMessage<String> updateBook(Book book) {
+        if (!bookRepository.existsById(book.getId())) {
+            return new ResponseMessage<>(401, "Error: This book is not found", "");
+        } else {
+            bookRepository.save(book);
+            return new ResponseMessage<>(200, "Success", "");
+        }
+    }
+
+    public ResponseMessage<String> deleteBook(Book book) {
+        if (!bookRepository.existsById(book.getId())) {
+            return new ResponseMessage<>(401, "Error: This book is not found", "");
+        } else {
+            bookRepository.deleteById(book.getId());
+            return new ResponseMessage<>(200, "Success", "");
+        }
     }
 }

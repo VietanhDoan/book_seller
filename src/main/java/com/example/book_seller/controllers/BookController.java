@@ -2,15 +2,15 @@ package com.example.book_seller.controllers;
 
 import com.example.book_seller.models.ResponseMessage;
 import com.example.book_seller.models.entities.Book;
-import com.example.book_seller.models.entities.User;
 import com.example.book_seller.services.BookService;
-import com.example.book_seller.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
+@Transactional
 @RequestMapping(path = "/api/books")
 public class BookController {
 
@@ -38,5 +38,17 @@ public class BookController {
     @ResponseBody
     public ResponseEntity<ResponseMessage<String>> postBook(@RequestBody Book book) {
         return ResponseEntity.ok(bookService.addBook(book));
+    }
+
+    @PutMapping(path = "/post/update", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<ResponseMessage<String>> updateBook(@RequestBody Book book) {
+        return ResponseEntity.ok(bookService.updateBook(book));
+    }
+
+    @DeleteMapping(path = "/post/delete", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<ResponseMessage<String>> deleteBook(@RequestBody Book book) {
+        return ResponseEntity.ok(bookService.deleteBook(book));
     }
 }
