@@ -45,4 +45,13 @@ public class BookService {
             return new ResponseMessage<>(200, "Success", "");
         }
     }
+
+    public ResponseMessage<Book> getBookDetail(String id) {
+        if (!bookRepository.existsById(Integer.valueOf(id))) {
+            return new ResponseMessage<>(401, "Error: This book is not found", null);
+        } else {
+            Book book = bookRepository.findBookById(Integer.valueOf(id));
+            return new ResponseMessage<>(200, "Success", book);
+        }
+    }
 }

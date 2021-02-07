@@ -34,6 +34,36 @@ public class BookController {
         return ResponseEntity.ok(new ResponseMessage<>(200, "", books));
     }
 
+    @GetMapping(path = "/{id}")
+    @ResponseBody
+    public ResponseEntity<ResponseMessage<Book>> getBookDetail(@PathVariable String id) {
+        return ResponseEntity.ok(bookService.getBookDetail(id));
+    }
+//
+//    @PostMapping(path = "/logout", consumes = "application/json", produces = "application/json")
+//    @ResponseBody
+//    public ResponseEntity<ResponseMessage<String>> logout(@RequestBody User user) {
+//        return ResponseEntity.ok(userService.register(user));
+//    }
+//
+//    @GetMapping(path = "/profile", consumes = "application/json", produces = "application/json")
+//    @ResponseBody
+//    public ResponseEntity<ResponseMessage<String>> getProfile(@RequestBody User user) {
+//        return ResponseEntity.ok(userService.register(user));
+//    }
+//
+//    @PutMapping(path = "/update", consumes = "application/json", produces = "application/json")
+//    @ResponseBody
+//    public ResponseEntity<ResponseMessage<String>> updateAccount(@RequestBody User user) {
+//        return ResponseEntity.ok(userService.register(user));
+//    }
+//
+//    @DeleteMapping(path = "/delete", consumes = "application/json", produces = "application/json")
+//    @ResponseBody
+//    public ResponseEntity<ResponseMessage<String>> deleteAccount(@RequestBody User user) {
+//        return ResponseEntity.ok(userService.register(user));
+//    }
+
     @PostMapping(path = "/post/add", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public ResponseEntity<ResponseMessage<String>> postBook(@RequestBody Book book) {
