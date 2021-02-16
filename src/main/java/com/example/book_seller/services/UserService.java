@@ -2,6 +2,7 @@ package com.example.book_seller.services;
 
 import com.example.book_seller.Utils.UtilsRegexEmail;
 import com.example.book_seller.models.ResponseMessage;
+import com.example.book_seller.models.entities.Book;
 import com.example.book_seller.models.entities.User;
 import com.example.book_seller.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,14 @@ public class UserService {
     }
 
     public ResponseMessage<String> register(User user) {
-        boolean isUserWithEmailCreated = userRepository.existsByEmail(user.getEmail());
-        boolean isUserWithPhoneCreated = userRepository.existsByPhone(user.getPhone());
-        boolean isEmailInvalid = UtilsRegexEmail.validate(user.getEmail());
-        boolean isPasswordInvalid = user.getPassword().length() < 8 || user.getPassword().length() > 20;
-        boolean isPhoneInvalid = user.getPhone().length() > 10;
+        String email = user.getEmail();
+        String phone = user.getPhone();
+        String password = user.getPassword();
+        boolean isUserWithEmailCreated = userRepository.existsByEmail(email);
+        boolean isUserWithPhoneCreated = userRepository.existsByPhone(phone);
+        boolean isEmailInvalid = UtilsRegexEmail.validate(email);
+        boolean isPasswordInvalid = password.length() < 8 || password.length() > 20;
+        boolean isPhoneInvalid = phone.length() > 10;
 
         if (isUserWithEmailCreated) {
             return new ResponseMessage<>(401, "Error: Duplicate email with registered account", "");
@@ -37,21 +41,20 @@ public class UserService {
             return new ResponseMessage<>(405, "Error: Please input password with 8-20 letters", "");
         } else {
             userRepository.save(user);
-            return new ResponseMessage<>(200, "Success", "");
+            return new ResponseMessage<>(200, "Success - Register success", "" /*Access token*/);
         }
     }
-//
-//    public ResponseMessage<String> login(User user) {
-//        if (user.getPassword().length() < 8) {
-//            return new ResponseMessage<>(401, "Error: Please input password ", "");
-//        }
-//        if (isUserWithInputEmailCreated) {
-//            return new ResponseMessage<>(401, "Error: Duplicate email with registered account", "");
-//        }
-//        if (isUserWithInputPhoneCreated) {
-//            return new ResponseMessage<>(402, "Error: Duplicate phone with registered account", "");
-//        }
-//        userRepository.save(user);
-//        return new ResponseMessage<>(200, "Register success", "");
-//    }
+
+    public ResponseMessage<String> login(User user) {
+        String email = user.getEmail();
+        String password = user.getPassword();
+        boolean isPasswordInvalid = password.length() < 8 || password.length() > 20;
+        if (isPasswordInvalid) {
+            return new ResponseMessage<>(401, "Error: Please input password with 8-20 letters", "");
+        }
+        if (userRepository.existsByEmail(email) && userRepository.existsByPassword(password)) {
+            return new ResponseMessage<>(200, "Success - Login success", ""/*Access token*/);
+        }
+        return new ResponseMessage<>(402, "Error: Account not registered", "");
+    }
 }

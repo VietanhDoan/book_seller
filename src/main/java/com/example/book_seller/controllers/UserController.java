@@ -22,11 +22,11 @@ public class UserController {
         return ResponseEntity.ok(userService.register(user));
     }
 
-//    @PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
-//    @ResponseBody
-//    public ResponseEntity<ResponseMessage<String>> login(@RequestBody User user) {
-//        return ResponseEntity.ok(userService.register(user));
-//    }
+    @PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<ResponseMessage<String>> login(@RequestBody User user) {
+        return ResponseEntity.ok(userService.login(user));
+    }
 //
 //    @PostMapping(path = "/logout", consumes = "application/json", produces = "application/json")
 //    @ResponseBody
