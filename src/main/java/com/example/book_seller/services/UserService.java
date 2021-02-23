@@ -2,11 +2,11 @@ package com.example.book_seller.services;
 
 import com.example.book_seller.Utils.UtilsRegexEmail;
 import com.example.book_seller.models.ResponseMessage;
-import com.example.book_seller.models.entities.Book;
 import com.example.book_seller.models.entities.User;
 import com.example.book_seller.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -43,9 +43,14 @@ public class UserService {
         else if (isPasswordInvalid) {
             return new ResponseMessage<>(405, "Error: Please input password with 8-20 letters", "");
         } else {
-            Date date = new Date();
-            user.setCreatedDate(date);
-            userRepository.save(user);
+//            Date date = new Date();
+//            DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+//            user.setCreatedDate(DateFormat.format(dateFormat));
+//
+//            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+//            String strDate = dateFormat.format(date);
+//
+//            userRepository.save(user);
             return new ResponseMessage<>(200, "Success - Register success", "" /*Access token*/);
         }
     }

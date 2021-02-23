@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@Table(name = "book", schema = "book_seller_app")
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
