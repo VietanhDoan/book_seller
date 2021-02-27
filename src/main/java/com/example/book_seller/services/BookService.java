@@ -30,7 +30,7 @@ public class BookService {
 
     public ResponseMessage<String> updateBook(Book book) {
         if (!bookRepository.existsById(book.getId())) {
-            return new ResponseMessage<>(401, "Error: This book is not found", "");
+            return new ResponseMessage<>(401, "Error: Không tìm thấy cuốn sách này", "");
         } else {
             bookRepository.save(book);
             return new ResponseMessage<>(200, "Success", "");
@@ -39,7 +39,7 @@ public class BookService {
 
     public ResponseMessage<String> deleteBook(Book book) {
         if (!bookRepository.existsById(book.getId())) {
-            return new ResponseMessage<>(401, "Error: This book is not found", "");
+            return new ResponseMessage<>(401, "Error: Không tìm thấy cuốn sách này", "");
         } else {
             bookRepository.deleteById(book.getId());
             return new ResponseMessage<>(200, "Success", "");
@@ -48,7 +48,7 @@ public class BookService {
 
     public ResponseMessage<Book> getBookDetail(String id) {
         if (!bookRepository.existsById(Integer.valueOf(id))) {
-            return new ResponseMessage<>(401, "Error: This book is not found", null);
+            return new ResponseMessage<>(401, "Error: Không tìm thấy cuốn sách này", null);
         } else {
             Book book = bookRepository.findBookById(Integer.valueOf(id));
             return new ResponseMessage<>(200, "Success", book);

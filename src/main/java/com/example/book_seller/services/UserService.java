@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Service
@@ -30,28 +32,24 @@ public class UserService {
         boolean isPhoneInvalid = phone.length() > 10;
 
         if (isUserWithEmailCreated) {
-            return new ResponseMessage<>(401, "Error: Duplicate email with registered account", "");
+            return new ResponseMessage<>(401, "Error: Trùng email với tài khoản đã tồn tại", "");
         } else if (isUserWithPhoneCreated) {
-            return new ResponseMessage<>(402, "Error: Duplicate phone with registered account", "");
+            return new ResponseMessage<>(402, "Error: Trùng số điện thoại với tài khoản đã tồn tại", "");
         }
 //        else if (isEmailInvalid) {
 //            return new ResponseMessage<>(403, "Error: Email is invalid", "");
 //        }
         else if (isPhoneInvalid) {
-            return new ResponseMessage<>(404, "Error: Please input phone with shorted than 10 letters", "");
+            return new ResponseMessage<>(404, "Error: Hãy nhập số điện thoại ít nhất 10 ký tự", "");
         }
         else if (isPasswordInvalid) {
-            return new ResponseMessage<>(405, "Error: Please input password with 8-20 letters", "");
+            return new ResponseMessage<>(405, "Error: Hãy nhập mật khẩu trong khoảng 8-20 ký tự", "");
         } else {
-//            Date date = new Date();
-//            DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
-//            user.setCreatedDate(DateFormat.format(dateFormat));
-//
-//            DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-//            String strDate = dateFormat.format(date);
-//
-//            userRepository.save(user);
-            return new ResponseMessage<>(200, "Success - Register success", "" /*Access token*/);
+            LocalDate date = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            user.setCreatedDate(date.format(formatter));
+            userRepository.save(user);
+            return new ResponseMessage<>(200, "Success - Đăng ký tài khoản thành công", "" /*Access token*/);
         }
     }
 
@@ -60,11 +58,11 @@ public class UserService {
         String password = user.getPassword();
         boolean isPasswordInvalid = password.length() < 8 || password.length() > 20;
         if (isPasswordInvalid) {
-            return new ResponseMessage<>(401, "Error: Please input password with 8-20 letters", "");
+            return new ResponseMessage<>(401, "Error: Hãy nhập mật khẩu trong khoảng 8-20 ký tự", "");
         }
         if (userRepository.existsByEmail(email) && userRepository.existsByPassword(password)) {
-            return new ResponseMessage<>(200, "Success - Login success", ""/*Access token*/);
+            return new ResponseMessage<>(200, "Success - Đăng nhập thành công", ""/*Access token*/);
         }
-        return new ResponseMessage<>(402, "Error: Account not registered", "");
+        return new ResponseMessage<>(402, "Error: Tài khoản chưa được đăng ký", "");
     }
 }

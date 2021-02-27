@@ -31,6 +31,9 @@ public class BookController {
     ) {
 //        List<Book> books = bookService.getBookList(accessToken, groupBy, genreID, sortedBy, offset, limit);
         List<Book> books = bookService.getBookList();
+        if (books.size() == 0) {
+            return ResponseEntity.ok(new ResponseMessage<>(200, "Danh sách các sách bán trống", books));
+        }
         return ResponseEntity.ok(new ResponseMessage<>(200, "", books));
     }
 
