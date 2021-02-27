@@ -4,22 +4,16 @@ import com.example.book_seller.Utils.UtilsRegexEmail;
 import com.example.book_seller.models.ResponseMessage;
 import com.example.book_seller.models.entities.User;
 import com.example.book_seller.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Service
 public class UserService {
 
-    final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     public ResponseMessage<String> register(User user) {
         String email = user.getEmail();
@@ -51,18 +45,5 @@ public class UserService {
             userRepository.save(user);
             return new ResponseMessage<>(200, "Success - Đăng ký tài khoản thành công", "" /*Access token*/);
         }
-    }
-
-    public ResponseMessage<String> login(User user) {
-        String email = user.getEmail();
-        String password = user.getPassword();
-        boolean isPasswordInvalid = password.length() < 8 || password.length() > 20;
-        if (isPasswordInvalid) {
-            return new ResponseMessage<>(401, "Error: Hãy nhập mật khẩu trong khoảng 8-20 ký tự", "");
-        }
-        if (userRepository.existsByEmail(email) && userRepository.existsByPassword(password)) {
-            return new ResponseMessage<>(200, "Success - Đăng nhập thành công", ""/*Access token*/);
-        }
-        return new ResponseMessage<>(402, "Error: Tài khoản chưa được đăng ký", "");
     }
 }

@@ -52,7 +52,7 @@ public class UserController {
         authenticate(user.getEmail(), user.getPassword());
 
         final UserDetails userDetails = userDetailsService
-                .loadUserByUsername("javainuse");
+                .loadUserByUsername(user.getEmail());
 
         final String token = jwtTokenUtil.generateToken(userDetails);
 
