@@ -55,4 +55,30 @@ public class UserService {
         }
         return new ResponseMessage<>(200, "Success - Đăng xuất tài khoản thành công", "");
     }
+
+    public ResponseMessage<User> getProfile(User user) {
+        boolean isExisted = userRepository.existsById(user.getId());
+        if (isExisted) {
+            return new ResponseMessage<>(200, "Success - Xem thông tin tài khoản", user);
+        }
+        return null;
+    }
+
+    public ResponseMessage<String> updateAccount(User user) {
+        boolean isExisted = userRepository.existsById(user.getId());
+        if (isExisted) {
+            userRepository.save(user);
+            return new ResponseMessage<>(200, "Success - Sửa thông tin tài khoản thành công", "");
+        }
+        return null;
+    }
+
+    public ResponseMessage<String> deleteAccount(User user) {
+        boolean isExisted = userRepository.existsById(user.getId());
+        if (isExisted) {
+            userRepository.deleteById(user.getId());
+            return new ResponseMessage<>(200, "Success - Xóa thông tin tài khoản thành công", "");
+        }
+        return null;
+    }
 }

@@ -5,6 +5,7 @@ import com.example.book_seller.models.JwtRequest;
 import com.example.book_seller.models.JwtResponse;
 import com.example.book_seller.models.ResponseMessage;
 import com.example.book_seller.models.entities.User;
+import com.example.book_seller.repositories.UserRepository;
 import com.example.book_seller.services.JwtUserDetailsService;
 import com.example.book_seller.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class UserController {
     @Autowired
     private JwtUserDetailsService userDetailsService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
     @ResponseBody
     public ResponseEntity<ResponseMessage<String>> register(@RequestBody User user) {
@@ -48,7 +52,8 @@ public class UserController {
 
         final String token = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new ResponseMessage<>(200, "Success - Đăng nhập thành công", new JwtResponse(token)));
+
+        return ResponseEntity.ok(new ResponseMessage<>(200, "Success - Đăng nhập thành công", new JwtResponse(token, userRepository.findByEmail(user.getEmail()).getId())));
     }
 
     private void authenticate(String username, String password) throws Exception {
@@ -66,22 +71,22 @@ public class UserController {
     public ResponseEntity<ResponseMessage<String>> logout(@RequestBody String string) {
         return ResponseEntity.ok(new ResponseMessage<>(200, "Success - Đăng xuất thành công", ""));
     }
-//
-//    @GetMapping(path = "/profile", consumes = "application/json", produces = "application/json")
-//    @ResponseBody
-//    public ResponseEntity<ResponseMessage<String>> getProfile(@RequestBody User user) {
-//        return ResponseEntity.ok(userService.register(user));
-//    }
-//
-//    @PutMapping(path = "/update", consumes = "application/json", produces = "application/json")
-//    @ResponseBody
-//    public ResponseEntity<ResponseMessage<String>> updateAccount(@RequestBody User user) {
-//        return ResponseEntity.ok(userService.register(user));
-//    }
-//
-//    @DeleteMapping(path = "/delete", consumes = "application/json", produces = "application/json")
-//    @ResponseBody
-//    public ResponseEntity<ResponseMessage<String>> deleteAccount(@RequestBody User user) {
-//        return ResponseEntity.ok(userService.register(user));
-//    }
+
+    @GetMapping(path = "/profile", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<ResponseMessage<User>> getProfile(@RequestBody User user) {
+        return ResponseEntity.ok(userService.getProfile(user));
+    }
+
+    @PutMapping(path = "/update", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<ResponseMessage<String>> updateAccount(@RequestBody User user) {
+        return ResponseEntity.ok(userService.updateAccount(user));
+    }
+
+    @DeleteMapping(path = "/delete", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<ResponseMessage<String>> deleteAccount(@RequestBody User user) {
+        return ResponseEntity.ok(userService.deleteAccount(user));
+    }
 }
