@@ -46,4 +46,13 @@ public class UserService {
             return new ResponseMessage<>(200, "Success - Đăng ký tài khoản thành công", "" /*Access token*/);
         }
     }
+
+    public ResponseMessage<String> logout() throws Exception {
+        try {
+            return new ResponseMessage<>(200, "Success - Đăng xuất tài khoản thành công", "");
+        } catch (Exception exception) {
+            System.out.println("ERROR");
+        }
+        return new ResponseMessage<>(200, "Success - Đăng xuất tài khoản thành công", "");
+    }
 }

@@ -17,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@CrossOrigin
 @RequestMapping(path = "/api/users")
 public class UserController {
 
@@ -39,15 +38,8 @@ public class UserController {
         return ResponseEntity.ok(userService.register(user));
     }
 
-//    @PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
-//    @ResponseBody
-//    public ResponseEntity<ResponseMessage<String>> login(@RequestBody User user) {
-//        return ResponseEntity.ok(userService.login(user));
-//    }
-
-//    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody User user) throws Exception {
+    public ResponseEntity<ResponseMessage<JwtResponse>> createAuthenticationToken(@RequestBody User user) throws Exception {
 
         authenticate(user.getEmail(), user.getPassword());
 
@@ -56,7 +48,7 @@ public class UserController {
 
         final String token = jwtTokenUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new JwtResponse(token));
+        return ResponseEntity.ok(new ResponseMessage<>(200, "Success - Đăng nhập thành công", new JwtResponse(token)));
     }
 
     private void authenticate(String username, String password) throws Exception {
@@ -69,11 +61,11 @@ public class UserController {
         }
     }
 
-//    @PostMapping(path = "/logout", consumes = "application/json", produces = "application/json")
-//    @ResponseBody
-//    public ResponseEntity<ResponseMessage<String>> logout(@RequestBody User user) {
-//        return ResponseEntity.ok(userService.register(user));
-//    }
+    @PostMapping(path = "/logout", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<ResponseMessage<String>> logout(@RequestBody String string) {
+        return ResponseEntity.ok(new ResponseMessage<>(200, "Success - Đăng xuất thành công", ""));
+    }
 //
 //    @GetMapping(path = "/profile", consumes = "application/json", produces = "application/json")
 //    @ResponseBody
