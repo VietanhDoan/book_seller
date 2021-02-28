@@ -1,10 +1,9 @@
 package com.example.book_seller.controllers;
 
 import com.example.book_seller.configs.JwtTokenUtil;
-import com.example.book_seller.models.JwtRequest;
 import com.example.book_seller.models.JwtResponse;
 import com.example.book_seller.models.ResponseMessage;
-import com.example.book_seller.models.entities.User;
+import com.example.book_seller.models.entities.UserEntity;
 import com.example.book_seller.repositories.UserRepository;
 import com.example.book_seller.services.JwtUserDetailsService;
 import com.example.book_seller.services.UserService;
@@ -38,22 +37,22 @@ public class UserController {
 
     @PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<ResponseMessage<String>> register(@RequestBody User user) {
-        return ResponseEntity.ok(userService.register(user));
+    public ResponseEntity<ResponseMessage<String>> register(@RequestBody UserEntity userEntity) {
+        return ResponseEntity.ok(userService.register(userEntity));
     }
 
     @PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<ResponseMessage<JwtResponse>> createAuthenticationToken(@RequestBody User user) throws Exception {
+    public ResponseEntity<ResponseMessage<JwtResponse>> createAuthenticationToken(@RequestBody UserEntity userEntity) throws Exception {
 
-        authenticate(user.getEmail(), user.getPassword());
+        authenticate(userEntity.getEmail(), userEntity.getPassword());
 
         final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(user.getEmail());
+                .loadUserByUsername(userEntity.getEmail());
 
         final String token = jwtTokenUtil.generateToken(userDetails);
 
 
-        return ResponseEntity.ok(new ResponseMessage<>(200, "Success - Đăng nhập thành công", new JwtResponse(token, userRepository.findByEmail(user.getEmail()).getId())));
+        return ResponseEntity.ok(new ResponseMessage<>(200, "Success - Đăng nhập thành công", new JwtResponse(token, userRepository.findByEmail(userEntity.getEmail()).getId())));
     }
 
     private void authenticate(String username, String password) throws Exception {
@@ -74,19 +73,19 @@ public class UserController {
 
     @GetMapping(path = "/profile", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<ResponseMessage<User>> getProfile(@RequestBody User user) {
-        return ResponseEntity.ok(userService.getProfile(user));
+    public ResponseEntity<ResponseMessage<UserEntity>> getProfile(@RequestBody UserEntity userEntity) {
+        return ResponseEntity.ok(userService.getProfile(userEntity));
     }
 
     @PutMapping(path = "/update", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<ResponseMessage<String>> updateAccount(@RequestBody User user) {
-        return ResponseEntity.ok(userService.updateAccount(user));
+    public ResponseEntity<ResponseMessage<String>> updateAccount(@RequestBody UserEntity userEntity) {
+        return ResponseEntity.ok(userService.updateAccount(userEntity));
     }
 
     @DeleteMapping(path = "/delete", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<ResponseMessage<String>> deleteAccount(@RequestBody User user) {
-        return ResponseEntity.ok(userService.deleteAccount(user));
+    public ResponseEntity<ResponseMessage<String>> deleteAccount(@RequestBody UserEntity userEntity) {
+        return ResponseEntity.ok(userService.deleteAccount(userEntity));
     }
 }

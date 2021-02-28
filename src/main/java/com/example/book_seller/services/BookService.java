@@ -1,9 +1,8 @@
 package com.example.book_seller.services;
 
 import com.example.book_seller.models.ResponseMessage;
-import com.example.book_seller.models.entities.Book;
+import com.example.book_seller.models.entities.BookEntity;
 import com.example.book_seller.repositories.BookRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,41 +16,41 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-//    public List<Book> getBookList(String accessToken, String groupBy, String genreID, String sortedBy, Integer offset, Integer limit) {
-    public List<Book> getBookList() {
-        List<Book> books = bookRepository.findAll();
-        return books;
+//    public List<BookEntity> getBookList(String accessToken, String groupBy, String genreID, String sortedBy, Integer offset, Integer limit) {
+    public List<BookEntity> getBookList() {
+        List<BookEntity> bookEntities = bookRepository.findAll();
+        return bookEntities;
     }
 
-    public ResponseMessage<String> addBook(Book book) {
-        bookRepository.save(book);
+    public ResponseMessage<String> addBook(BookEntity bookEntity) {
+        bookRepository.save(bookEntity);
         return new ResponseMessage<>(200, "Success", "");
     }
 
-    public ResponseMessage<String> updateBook(Book book) {
-        if (!bookRepository.existsById(book.getId())) {
+    public ResponseMessage<String> updateBook(BookEntity bookEntity) {
+        if (!bookRepository.existsById(bookEntity.getId())) {
             return new ResponseMessage<>(401, "Error: Không tìm thấy cuốn sách này", "");
         } else {
-            bookRepository.save(book);
+            bookRepository.save(bookEntity);
             return new ResponseMessage<>(200, "Success", "");
         }
     }
 
-    public ResponseMessage<String> deleteBook(Book book) {
-        if (!bookRepository.existsById(book.getId())) {
+    public ResponseMessage<String> deleteBook(BookEntity bookEntity) {
+        if (!bookRepository.existsById(bookEntity.getId())) {
             return new ResponseMessage<>(401, "Error: Không tìm thấy cuốn sách này", "");
         } else {
-            bookRepository.deleteById(book.getId());
+            bookRepository.deleteById(bookEntity.getId());
             return new ResponseMessage<>(200, "Success", "");
         }
     }
 
-    public ResponseMessage<Book> getBookDetail(String id) {
+    public ResponseMessage<BookEntity> getBookDetail(String id) {
         if (!bookRepository.existsById(Integer.valueOf(id))) {
             return new ResponseMessage<>(401, "Error: Không tìm thấy cuốn sách này", null);
         } else {
-            Book book = bookRepository.findBookById(Integer.valueOf(id));
-            return new ResponseMessage<>(200, "Success", book);
+            BookEntity bookEntity = bookRepository.findBookById(Integer.valueOf(id));
+            return new ResponseMessage<>(200, "Success", bookEntity);
         }
     }
 }

@@ -1,7 +1,5 @@
 package com.example.book_seller.models;
 
-import com.example.book_seller.models.entities.User;
-
 import java.io.Serializable;
 
 public class JwtResponse implements Serializable {

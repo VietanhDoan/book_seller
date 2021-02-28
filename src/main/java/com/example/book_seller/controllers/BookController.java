@@ -1,7 +1,7 @@
 package com.example.book_seller.controllers;
 
 import com.example.book_seller.models.ResponseMessage;
-import com.example.book_seller.models.entities.Book;
+import com.example.book_seller.models.entities.BookEntity;
 import com.example.book_seller.services.BookService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +21,7 @@ public class BookController {
     }
 
     @GetMapping(path = "")
-    public ResponseEntity<ResponseMessage<List<Book>>> getBookList(
+    public ResponseEntity<ResponseMessage<List<BookEntity>>> getBookList(
 //            @RequestParam(name = "accessToken") String accessToken,
             @RequestParam(name = "groupBy", required = false) String groupBy,
             @RequestParam(name = "genreID", required = false) String genreID,
@@ -29,41 +29,41 @@ public class BookController {
             @RequestParam(name = "offset", required = false) Integer offset,
             @RequestParam(name = "limit", required = false) Integer limit
     ) {
-//        List<Book> books = bookService.getBookList(accessToken, groupBy, genreID, sortedBy, offset, limit);
-        List<Book> books = bookService.getBookList();
-        if (books.size() == 0) {
-            return ResponseEntity.ok(new ResponseMessage<>(200, "Danh sách các sách bán trống", books));
+//        List<BookEntity> bookEntities = bookService.getBookList(accessToken, groupBy, genreID, sortedBy, offset, limit);
+        List<BookEntity> bookEntities = bookService.getBookList();
+        if (bookEntities.size() == 0) {
+            return ResponseEntity.ok(new ResponseMessage<>(200, "Danh sách các sách bán trống", bookEntities));
         }
-        return ResponseEntity.ok(new ResponseMessage<>(200, "", books));
+        return ResponseEntity.ok(new ResponseMessage<>(200, "", bookEntities));
     }
 
     @GetMapping(path = "/{id}")
     @ResponseBody
-    public ResponseEntity<ResponseMessage<Book>> getBookDetail(@PathVariable String id) {
+    public ResponseEntity<ResponseMessage<BookEntity>> getBookDetail(@PathVariable String id) {
         return ResponseEntity.ok(bookService.getBookDetail(id));
     }
 
     @PutMapping(path = "/{id}/favourite", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<ResponseMessage<String>> favouriteBook(@PathVariable String id, @RequestBody Book book) {
-        return ResponseEntity.ok(bookService.updateBook(book));
+    public ResponseEntity<ResponseMessage<String>> favouriteBook(@PathVariable String id, @RequestBody BookEntity bookEntity) {
+        return ResponseEntity.ok(bookService.updateBook(bookEntity));
     }
 
     @PostMapping(path = "/post/add", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<ResponseMessage<String>> postBook(@RequestBody Book book) {
-        return ResponseEntity.ok(bookService.addBook(book));
+    public ResponseEntity<ResponseMessage<String>> postBook(@RequestBody BookEntity bookEntity) {
+        return ResponseEntity.ok(bookService.addBook(bookEntity));
     }
 
     @PutMapping(path = "/post/update", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<ResponseMessage<String>> updateBook(@RequestBody Book book) {
-        return ResponseEntity.ok(bookService.updateBook(book));
+    public ResponseEntity<ResponseMessage<String>> updateBook(@RequestBody BookEntity bookEntity) {
+        return ResponseEntity.ok(bookService.updateBook(bookEntity));
     }
 
     @DeleteMapping(path = "/post/delete", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<ResponseMessage<String>> deleteBook(@RequestBody Book book) {
-        return ResponseEntity.ok(bookService.deleteBook(book));
+    public ResponseEntity<ResponseMessage<String>> deleteBook(@RequestBody BookEntity bookEntity) {
+        return ResponseEntity.ok(bookService.deleteBook(bookEntity));
     }
 }

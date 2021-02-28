@@ -2,7 +2,7 @@ package com.example.book_seller.services;
 
 import com.example.book_seller.Utils.UtilsRegexEmail;
 import com.example.book_seller.models.ResponseMessage;
-import com.example.book_seller.models.entities.User;
+import com.example.book_seller.models.entities.UserEntity;
 import com.example.book_seller.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +15,10 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public ResponseMessage<String> register(User user) {
-        String email = user.getEmail();
-        String phone = user.getPhone();
-        String password = user.getPassword();
+    public ResponseMessage<String> register(UserEntity userEntity) {
+        String email = userEntity.getEmail();
+        String phone = userEntity.getPhone();
+        String password = userEntity.getPassword();
         boolean isUserWithEmailCreated = userRepository.existsByEmail(email);
         boolean isUserWithPhoneCreated = userRepository.existsByPhone(phone);
         boolean isEmailInvalid = UtilsRegexEmail.validate(email);
@@ -41,8 +41,8 @@ public class UserService {
         } else {
             LocalDate date = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            user.setCreatedDate(date.format(formatter));
-            userRepository.save(user);
+            userEntity.setCreatedDate(date.format(formatter));
+            userRepository.save(userEntity);
             return new ResponseMessage<>(200, "Success - Đăng ký tài khoản thành công", "" /*Access token*/);
         }
     }
@@ -56,36 +56,36 @@ public class UserService {
         return new ResponseMessage<>(200, "Success - Đăng xuất tài khoản thành công", "");
     }
 
-    public ResponseMessage<User> getProfile(User user) {
-        boolean isExisted = userRepository.existsById(user.getId());
+    public ResponseMessage<UserEntity> getProfile(UserEntity userEntity) {
+        boolean isExisted = userRepository.existsById(userEntity.getId());
         if (isExisted) {
-            User user1 = userRepository.findById(user.getId()).get();
-            return new ResponseMessage<>(200, "Success - Xem thông tin tài khoản", user1);
+            UserEntity userEntity1 = userRepository.findById(userEntity.getId()).get();
+            return new ResponseMessage<>(200, "Success - Xem thông tin tài khoản", userEntity1);
         }
         return new ResponseMessage<>(401, "Error - Tài khoản không tồn tại", null);
     }
 
-    public ResponseMessage<String> updateAccount(User user) {
-        boolean isExisted = userRepository.existsById(user.getId());
+    public ResponseMessage<String> updateAccount(UserEntity userEntity) {
+        boolean isExisted = userRepository.existsById(userEntity.getId());
         if (isExisted) {
-            User user1 = userRepository.findById(user.getId()).get();
-            user1.setUsername(user.getUsername());
-//            user1.setEmail(user.getEmail());
-//            user1.setPassword(user.getPassword());
-            user1.setPhone(user.getPhone());
+            UserEntity userEntity1 = userRepository.findById(userEntity.getId()).get();
+            userEntity1.setUsername(userEntity.getUsername());
+//            userEntity1.setEmail(userEntity.getEmail());
+//            userEntity1.setPassword(userEntity.getPassword());
+            userEntity1.setPhone(userEntity.getPhone());
             LocalDate date = LocalDate.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-            user1.setCreatedDate(date.format(formatter));
-            userRepository.save(user1);
+            userEntity1.setCreatedDate(date.format(formatter));
+            userRepository.save(userEntity1);
             return new ResponseMessage<>(200, "Success - Sửa thông tin tài khoản thành công", "");
         }
         return new ResponseMessage<>(401, "Error - Tài khoản không tồn tại", null);
     }
 
-    public ResponseMessage<String> deleteAccount(User user) {
-        boolean isExisted = userRepository.existsById(user.getId());
+    public ResponseMessage<String> deleteAccount(UserEntity userEntity) {
+        boolean isExisted = userRepository.existsById(userEntity.getId());
         if (isExisted) {
-            userRepository.deleteById(user.getId());
+            userRepository.deleteById(userEntity.getId());
             return new ResponseMessage<>(200, "Success - Xóa thông tin tài khoản thành công", "");
         }
         return null;
