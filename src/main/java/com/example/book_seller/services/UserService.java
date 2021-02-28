@@ -62,7 +62,7 @@ public class UserService {
             User user1 = userRepository.findById(user.getId()).get();
             return new ResponseMessage<>(200, "Success - Xem thông tin tài khoản", user1);
         }
-        return null;
+        return new ResponseMessage<>(401, "Error - Tài khoản không tồn tại", null);
     }
 
     public ResponseMessage<String> updateAccount(User user) {
