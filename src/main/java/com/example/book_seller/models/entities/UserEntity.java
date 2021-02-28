@@ -34,6 +34,6 @@ public class UserEntity {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "create_date")
+    @Column(name = "created_date")
     private String createdDate;
 }
