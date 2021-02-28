@@ -59,7 +59,8 @@ public class UserService {
     public ResponseMessage<User> getProfile(User user) {
         boolean isExisted = userRepository.existsById(user.getId());
         if (isExisted) {
-            return new ResponseMessage<>(200, "Success - Xem thông tin tài khoản", user);
+            User user1 = userRepository.findById(user.getId()).get();
+            return new ResponseMessage<>(200, "Success - Xem thông tin tài khoản", user1);
         }
         return null;
     }
