@@ -68,10 +68,18 @@ public class UserService {
     public ResponseMessage<String> updateAccount(User user) {
         boolean isExisted = userRepository.existsById(user.getId());
         if (isExisted) {
-            userRepository.save(user);
+            User user1 = userRepository.findById(user.getId()).get();
+            user1.setUsername(user.getUsername());
+//            user1.setEmail(user.getEmail());
+//            user1.setPassword(user.getPassword());
+            user1.setPhone(user.getPhone());
+            LocalDate date = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            user1.setCreatedDate(date.format(formatter));
+            userRepository.save(user1);
             return new ResponseMessage<>(200, "Success - Sửa thông tin tài khoản thành công", "");
         }
-        return null;
+        return new ResponseMessage<>(401, "Error - Tài khoản không tồn tại", null);
     }
 
     public ResponseMessage<String> deleteAccount(User user) {

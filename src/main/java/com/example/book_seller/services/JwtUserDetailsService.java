@@ -30,7 +30,7 @@ public class JwtUserDetailsService implements UserDetailsService {
             return new org.springframework.security.core.userdetails.User(user.getEmail(), bcryptEncoder.encode(user.getPassword()),
                     new ArrayList<>());
         } else {
-            throw new UsernameNotFoundException("User not found with username: " + username);
+            throw new UsernameNotFoundException("Error: Tài khoản chưa được đăng ký" + username);
         }
     }
 
