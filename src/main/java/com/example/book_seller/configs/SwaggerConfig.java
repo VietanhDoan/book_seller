@@ -3,6 +3,8 @@ package com.example.book_seller.configs;
 import java.util.Collections;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -20,19 +22,20 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
-                .build().apiInfo(getApiInfo());
+                .build();
     }
 
-    private ApiInfo getApiInfo() {
-        return new ApiInfo(
-                "Bookseller Application API",
-                "This is an API documentation for Bookseller Application",
-                "V1",
-                "urn:tos",
-                new Contact("Viet Anh", "https://www.google.com/", "anhdv@yopmail.com"),
-                "CC BY-SA 3.0",
-                "https://creativecommons.org/licenses/by-sa/3.0/",
-                Collections.emptyList()
-        );
-    }
+//    @Bean
+//    public WebMvcConfigurer webMvcConfigurer()
+//    {
+//        return new WebMvcConfigurer()
+//        {
+//            @Override
+//            public void addResourceHandlers( ResourceHandlerRegistry registry )
+//            {
+//                registry.addResourceHandler( "swagger-ui.html" ).addResourceLocations( "classpath:/META-INF/resources/" );
+//                registry.addResourceHandler( "/webjars/**" ).addResourceLocations( "classpath:/META-INF/resources/webjars/" );
+//            }
+//        };
+//    }
 }
